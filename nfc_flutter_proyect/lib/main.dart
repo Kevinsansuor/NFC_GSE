@@ -1,106 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart'; 
+import 'package:nfc_flutter_proyect/widgets/body_text/body_text.dart';
+import 'package:nfc_flutter_proyect/widgets/h1_text/tittle_text.dart';
+import 'package:nfc_flutter_proyect/widgets/h2_text/large_text.dart';
+
 void main() {
   runApp(const NFCApp());
 }
 
 class NFCApp extends StatelessWidget {
-  const NFCApp({Key? key}) : super(key: key);
+  const NFCApp({super.key});
+  final String title = 'NFC App';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.black,
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-               const SizedBox(height: 60),
-              // Título
-              Text(
-                'NFC App',
-                style: GoogleFonts.montserrat(
-                  color: Colors.white,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              // Descripción
-              Text(
-                'Bienvenido a NFC App, con esta aplicación podrás, escanear, añadir y configurar tarjetas con la tecnología NFC de tu dispositivo Android.',
-                style: GoogleFonts.montserrat(
-                  color: Colors.white70,
-                  fontSize: 16,
-                ),
-              ),
-              // Espacio entre el primer párrafo y la línea de división
-              const SizedBox(height: 15),
-              const Divider(
-                color: Colors.white24,
-                thickness: 1,
-                height: 25,
-              ),
-              const SizedBox(height: 15), // Espacio adicional después de la línea de separación
-              // Subtítulo
-              Text(
-                'Prueba NFC',
-                style: GoogleFonts.montserrat(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              // Descripción del botón
-              Text(
-                'Verifiquemos que tu dispositivo tiene la tecnología NFC incorporada.',
-                style: GoogleFonts.montserrat(
-                  color: Colors.white70,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 90),
-              // Icono NFC personalizado usando flutter_vector_icons
-              Center(
-                child: Icon(
-                  MaterialCommunityIcons.nfc,  // Usando el icono de NFC de MaterialCommunityIcons
-                  size: 100,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 100),
-              
-              // Botón con bordes redondeados, sin relleno
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Acción al presionar el botón
-                  },
-                  style: ElevatedButton.styleFrom(
-                    side: const BorderSide(color: Colors.white, width: 2), // Borde blanco
-                    padding: const EdgeInsets.symmetric(horizontal: 65, vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30), // Bordes redondeados
-                    ),
-                    backgroundColor: Colors.transparent, // Sin relleno
-                  ),
-                  child: Text(
-                    'Verificar NFC',
-                    style: GoogleFonts.montserrat(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+      title: title,
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.white, brightness: Brightness.dark)
+            .copyWith(primary: const Color(0xFFdde0e1)),
+        textTheme: TextTheme(
+          displayLarge: GoogleFonts.montserrat(
+            fontSize: 42,
+            fontWeight: FontWeight.bold,
+            height: 42 / 42,
           ),
+          titleLarge: GoogleFonts.raleway(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            height: 32 / 26,
+          ),
+          bodyLarge: GoogleFonts.sourceSans3(
+            fontSize: 18,
+            fontWeight: FontWeight.normal,
+            height: 18 / 21,
+          ),
+        ),
+      ),
+      home: const SafeArea(
+        child: Home(),
+      ),
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final Color primaryColor = Theme.of(context).colorScheme.primary;
+
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+        child: Center(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            TittleText(
+              text: 'NFC App',
+              color: primaryColor,
+              textStyle: Theme.of(context).textTheme.displayLarge,
+            ),
+            LargeText(
+              text: 'Subtitulo',
+              color: primaryColor,
+              textStyle: Theme.of(context).textTheme.titleLarge,
+            ),
+            BodyText(
+              text: 'Cuerpo',
+              color: primaryColor,
+              textStyle: Theme.of(context).textTheme.bodyLarge,
+            )
+          ]),
         ),
       ),
     );

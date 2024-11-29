@@ -1,16 +1,39 @@
-# nfc_flutter_proyect
+# Instrucciones para iniciar el proyecto por primera vez
 
-A new Flutter project.
+1. **Instalar dependencias:**
+   Asegúrate de tener Flutter instalado en tu sistema. Luego, ejecuta:
+   ```bash
+   flutter pub get
+   ```
 
-## Getting Started
+2. **Ejecutar la aplicación:**
+   Conecta un dispositivo o inicia un emulador, y luego corre:
+   ```bash
+   flutter run
+   ```
 
-This project is a starting point for a Flutter application.
+# Textos Customizados
 
-A few resources to get you started if this is your first Flutter project:
+## Titulos
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Usar widget TittleText
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+TittleText(
+text: 'Texto',
+color: color,
+textStyle: Theme.of(context).textTheme.displayLarge,
+),
+
+LargeText(
+text: 'Texto',
+color: color,
+textStyle: Theme.of(context).textTheme.titleLarge,
+),
+
+BodyText(
+text: 'Texto',
+color: color,
+textStyle: Theme.of(context).textTheme.bodyLarge,
+)
+
+
