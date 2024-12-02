@@ -17,6 +17,7 @@ dependencies:
   logger: ^2.5.0
   google_fonts: ^6.2.1
   flutter_vector_icons: ^2.0.0  
+  flutter_nfc_kit: ^3.5.2
 
 dev_dependencies:
   flutter_test:

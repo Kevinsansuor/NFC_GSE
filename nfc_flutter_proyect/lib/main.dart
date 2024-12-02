@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:nfc_flutter_proyect/widgets/body_text/body_text.dart';
 import 'package:nfc_flutter_proyect/widgets/h1_text/tittle_text.dart';
 import 'package:nfc_flutter_proyect/widgets/h2_text/large_text.dart';
@@ -47,10 +48,51 @@ class NFCApp extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({
-    super.key,
-  });
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  String _nfcData = 'Presiona el botón para leer NFC';
+  bool _isReading = false;
+
+  Future<void> _readNFC() async {
+    setState(() {
+      _isReading = true;
+      _nfcData = 'Escaneando etiqueta NFC...';
+    });
+
+    try {
+      // Inicia la sesión NFC
+      final NFCTag tag = await FlutterNfcKit.poll();
+
+      // Construcción de información básica del tag
+      String tagInfo = '''
+Etiqueta detectada:
+ID: ${tag.id}
+Tipo: ${tag.type}
+      ''';
+
+      // Solo usamos los datos básicos (ID y tipo), sin necesidad de leer NDEF
+      setState(() {
+        _nfcData = tagInfo;
+      });
+    } catch (e) {
+      // Manejo del error
+      setState(() {
+        _nfcData = 'Error al leer NFC: $e';
+      });
+    } finally {
+      // Finaliza la sesión NFC
+      await FlutterNfcKit.finish();
+      setState(() {
+        _isReading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,23 +102,31 @@ class Home extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
         child: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            TittleText(
-              text: 'NFC App',
-              color: primaryColor,
-              textStyle: Theme.of(context).textTheme.displayLarge,
-            ),
-            LargeText(
-              text: 'Subtitulo',
-              color: primaryColor,
-              textStyle: Theme.of(context).textTheme.titleLarge,
-            ),
-            BodyText(
-              text: 'Cuerpo',
-              color: primaryColor,
-              textStyle: Theme.of(context).textTheme.bodyLarge,
-            )
-          ]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TittleText(
+                text: 'NFC App',
+                color: primaryColor,
+                textStyle: Theme.of(context).textTheme.displayLarge,
+              ),
+              LargeText(
+                text: 'Subtitulo',
+                color: primaryColor,
+                textStyle: Theme.of(context).textTheme.titleLarge,
+              ),
+              BodyText(
+                text: _nfcData,
+                color: primaryColor,
+                textStyle: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _isReading ? null : _readNFC,
+                child: const Text('Leer NFC'),
+              ),
+            ],
+          ),
         ),
       ),
     );
