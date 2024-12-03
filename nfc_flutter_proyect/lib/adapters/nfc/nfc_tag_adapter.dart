@@ -1,5 +1,5 @@
-import 'package:nfc_flutter_proyect/interfaz/nfc/nfc_data.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_flutter_proyect/interfaz/nfc/nfc_data.dart';
 
 class NfcTagAdapter implements NfcData {
   final NfcTag tag;
@@ -8,26 +8,29 @@ class NfcTagAdapter implements NfcData {
 
   @override
   String get id {
-    return tag.data['id']?.toString() ?? 'ID desconocido';
+    // Intentar obtener un ID único de la etiqueta
+    return tag.data['id']?.toString() ?? tag.data['identifier']?.toString() ?? 'ID desconocido';
   }
 
   @override
   String get type {
-    return tag.data['type']?.toString() ?? 'Tipo desconocido';
+    // Determinar el tipo de etiqueta usando techList
+    return tag.data['techList']?.join(', ') ?? 'Tipo desconocido';
   }
 
   @override
   Map<String, dynamic> get additionalData {
-    return tag.data['additionalData'] ?? {};
+    // Retornar datos adicionales
+    return tag.data;
   }
 
   @override
   String toString() {
     return '''
-Etiqueta NFC:
+Etiqueta NFC Detectada:
 ID: $id
 Tipo: $type
-Datos adicionales: ${additionalData.isNotEmpty ? additionalData : 'Ninguno'}
+Datos Adicionales: ${additionalData.isNotEmpty ? additionalData : 'Ninguno'}
     ''';
   }
 }
