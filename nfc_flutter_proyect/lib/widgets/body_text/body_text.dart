@@ -15,12 +15,18 @@ class BodyText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle defaultStyle =
-        Theme.of(context).textTheme.bodyLarge ?? const TextStyle();
+        Theme.of(context).textTheme.bodyLarge?.copyWith(height: 16) ??
+            const TextStyle(height: 1.0);
 
-    return Text(
-      text,
-      style: textStyle?.copyWith(color: color) ??
-          defaultStyle.copyWith(color: color),
+    return SizedBox(
+      width: double.infinity,
+      child: Text(
+        text,
+        style: textStyle?.copyWith(
+                color: color,
+                height: 25 / (textStyle?.fontSize ?? defaultStyle.fontSize!)) ??
+            defaultStyle.copyWith(color: color),
+      ),
     );
   }
 }

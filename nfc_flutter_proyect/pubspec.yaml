@@ -6,9 +6,6 @@ version: 1.0.0+1
 environment:
   sdk: ">=3.5.0 <4.0.0"
 
-assets:
-  - images/app_images/img_nfc_test.png
-
 dependencies:
   flutter:
     sdk: flutter
@@ -16,7 +13,6 @@ dependencies:
   nfc_manager: ^3.5.0
   logger: ^2.5.0
   google_fonts: ^6.2.1
-  flutter_vector_icons: ^2.0.0  
   flutter_nfc_kit: ^3.5.2
 
 dev_dependencies:
@@ -26,3 +22,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/appImages/imgNfcTest.png
+    - assets/images/appImages/img_nfc_test.png
+

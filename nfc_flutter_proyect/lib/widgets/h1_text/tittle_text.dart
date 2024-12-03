@@ -17,10 +17,16 @@ class TittleText extends StatelessWidget {
     final TextStyle defaultStyle =
         Theme.of(context).textTheme.displayLarge ?? const TextStyle();
 
-    return Text(
-      text,
-      style: textStyle?.copyWith(color: color) ??
-          defaultStyle.copyWith(color: color),
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 35, bottom: 10, left: 0, right: 0),
+        child: Text(
+          text,
+          style: textStyle?.copyWith(color: color) ??
+              defaultStyle.copyWith(color: color),
+        ),
+      ),
     );
   }
 }

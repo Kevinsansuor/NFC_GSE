@@ -17,10 +17,16 @@ class LargeText extends StatelessWidget {
     final TextStyle defaultStyle =
         Theme.of(context).textTheme.titleLarge ?? const TextStyle();
 
-    return Text(
-      text,
-      style: textStyle?.copyWith(color: color) ??
-          defaultStyle.copyWith(color: color),
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 0, bottom: 25),
+        child: Text(
+          text,
+          style: textStyle?.copyWith(color: color) ??
+              defaultStyle.copyWith(color: color),
+        ),
+      ),
     );
   }
 }
