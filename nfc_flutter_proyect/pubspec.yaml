@@ -13,7 +13,6 @@ dependencies:
   nfc_manager: ^3.5.0
   logger: ^2.5.0
   google_fonts: ^6.2.1
-  flutter_nfc_kit: ^3.5.2
 
 dev_dependencies:
   flutter_test:

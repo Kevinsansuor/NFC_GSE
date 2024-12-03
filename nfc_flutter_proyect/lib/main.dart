@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:nfc_flutter_proyect/widgets/body_text/body_text.dart';
 import 'package:nfc_flutter_proyect/widgets/h1_text/tittle_text.dart';
 import 'package:nfc_flutter_proyect/widgets/h2_text/large_text.dart';
+import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_flutter_proyect/adapters/nfc/nfc_tag_adapter.dart';
 
 void main() {
   runApp(const NFCApp());
@@ -69,46 +70,43 @@ class _HomeState extends State<Home> {
   bool _isReading = false;
 
   Future<void> _readNFC() async {
-    setState(() {
-      _isReading = true;
-      _nfcData = 'Escaneando etiqueta NFC...';
-    });
-
-    try {
-      // Inicia la sesión NFC
-      final NFCTag tag = await FlutterNfcKit.poll();
-
-      // Construcción de información básica del tag
-      String tagInfo = '''
-Etiqueta detectada:
-ID: ${tag.id}
-Tipo: ${tag.type}
-      ''';
-
-      // Solo usamos los datos básicos (ID y tipo), sin necesidad de leer NDEF
-      setState(() {
-        _nfcData = tagInfo;
-      });
-
-      // Mostrar el popup con la información NFC
-      _showNfcDialog(tagInfo);
-    } catch (e) {
-      // Manejo del error
-      setState(() {
-        _nfcData = 'Error al leer NFC: $e';
-      });
-
-      // Mostrar el popup con el mensaje de error
-      _showNfcDialog('Error al leer NFC: $e');
-    } finally {
-      // Finaliza la sesión NFC
-      await FlutterNfcKit.finish();
-      setState(() {
-        _isReading = false;
-        _nfcData = 'Tu dispositivo no posee la tecnología NFC';
-      });
-    }
+  bool isAvailable = await NfcManager.instance.isAvailable();
+  if (!isAvailable) {
+    _showNfcDialog('Tu dispositivo no soporta la tecnología NFC.');
+    return;
   }
+
+  setState(() {
+    _isReading = true;
+    _nfcData = 'Escaneando etiqueta NFC...';
+  });
+
+  try {
+    await NfcManager.instance.startSession(
+      onDiscovered: (NfcTag tag) async {
+        NfcTagAdapter adapter = NfcTagAdapter(tag);
+        String tagInfo = adapter.toString();
+
+        setState(() {
+          _nfcData = tagInfo;
+        });
+        _showNfcDialog(tagInfo);
+      },
+    );
+  } catch (e) {
+    String errorMessage = 'Error al leer NFC: $e';
+    setState(() {
+      _nfcData = errorMessage;
+    });
+    _showNfcDialog(errorMessage);
+  } finally {
+    await NfcManager.instance.stopSession();
+    setState(() {
+      _isReading = false;
+    });
+  }
+}
+
 
   void _showNfcDialog(String message) {
     showDialog(
