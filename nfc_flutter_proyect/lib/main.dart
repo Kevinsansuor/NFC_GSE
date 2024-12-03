@@ -73,51 +73,52 @@ class _HomeState extends State<Home> {
   bool _isReading = false;
 
   Future<void> _readNFC() async {
-  try {
-    // Verificar si el dispositivo tiene NFC disponible
-    bool isAvailable = await NfcManager.instance.isAvailable();
+    try {
+      // Verificar si el dispositivo tiene NFC disponible
+      bool isAvailable = await NfcManager.instance.isAvailable();
 
-    if (!isAvailable) {
-      _showNfcDialog('Tu dispositivo no soporta la tecnología NFC.');
-      return;
+      if (!isAvailable) {
+        _showNfcDialog('Tu dispositivo no soporta la tecnología NFC.');
+        return;
+      }
+
+      _showNfcDialog('Escaneando etiqueta NFC...');
+      setState(() {
+        _isReading = true;
+        _nfcData = 'Escaneando...';
+      });
+
+      // Iniciar sesión NFC
+      await NfcManager.instance.startSession(onDiscovered: _handleNfcTag);
+      logger.i('NFC session started');
+      
+    } catch (e) {
+      _showNfcDialog('Error al leer NFC: $e');
     }
-
-    _showNfcDialog('Escaneando etiqueta NFC...');
-    setState(() {
-      _isReading = true;
-      _nfcData = 'Escaneando...';
-    });
-
-    // Iniciar sesión NFC
-    await NfcManager.instance.startSession(onDiscovered: _handleNfcTag);
-  } catch (e) {
-    _showNfcDialog('Error al leer NFC: $e');
   }
-}
 
-Future<void> _handleNfcTag(NfcTag tag) async {
-  try {
-
-    // Procesar los datos del NFC usando el adaptador
-    String nfcTag = NfcTagAdapter(tag).toString();
-    // Actualizar estado y mostrar datos
-    setState(() {
-      _isReading = false;
-      _nfcData = nfcTag;
-    });
-    Navigator.of(context).pop();
-    _showNfcDialog(_nfcData);
-  } catch (e) {
-    _showNfcDialog('Error al procesar la etiqueta NFC: $e');
-  } finally {
-    // Detener la sesión NFC
-    await NfcManager.instance.stopSession();
-    setState(() {
-      _isReading = false;
-    });
+  Future<void> _handleNfcTag(NfcTag tag) async {
+    try {
+      // Procesar los datos del NFC usando el adaptador
+      logger.i('Datos de la etiqueta Isodep: ${tag.data['isodep']}, Nfc-A: ${tag.data['nfca']}, Nfc-B: ${tag.data['nfcb']}, Nfc-C: ${tag.data['nfcc']}');
+      String nfcTag = NfcTagAdapter(tag).toString();
+      // Actualizar estado y mostrar datos
+      setState(() {
+        _isReading = false;
+        _nfcData = nfcTag;
+      });
+      Navigator.of(context).pop();
+      _showNfcDialog(_nfcData);
+    } catch (e) {
+      _showNfcDialog('Error al procesar la etiqueta NFC: $e');
+    } finally {
+      // Detener la sesión NFC
+      await NfcManager.instance.stopSession();
+      setState(() {
+        _isReading = false;
+      });
+    }
   }
-}
-
 
   void _showNfcDialog(String message) {
     showDialog(

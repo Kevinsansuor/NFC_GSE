@@ -1,5 +1,5 @@
 import 'package:nfc_manager/nfc_manager.dart';
-import 'package:nfc_flutter_proyect/interfaz/nfc/nfc_data.dart';
+import 'dart:convert';
 
 class NfcTagAdapter implements NfcData {
   final NfcTag tag;
@@ -8,29 +8,56 @@ class NfcTagAdapter implements NfcData {
 
   @override
   String get id {
-    // Intentar obtener un ID único de la etiqueta
-    return tag.data['id']?.toString() ?? tag.data['identifier']?.toString() ?? 'ID desconocido';
+    final identifier = tag.data['nfca']?['identifier'] ?? tag.data['identifier'];
+    return identifier != null ? _formatIdentifier(identifier) : 'ID desconocido';
   }
 
   @override
-  String get type {
-    // Determinar el tipo de etiqueta usando techList
-    return tag.data['techList']?.join(', ') ?? 'Tipo desconocido';
-  }
+String get type {
+  final technologyMap = {
+    'isodep': 'IsoDep',
+    'nfca': 'Nfc-A',
+    'nfcb': 'Nfc-B',
+    'nfcc': 'Nfc-C',
+    'nfcf': 'Nfc-F',
+    'nfcv': 'Nfc-V',
+    'mifareclassic': 'Mifare Classic',
+    'mifareultralight': 'Mifare Ultralight',
+  };
+
+  final technologies = technologyMap.entries
+      .where((entry) => tag.data.containsKey(entry.key))
+      .map((entry) => entry.value)
+      .toList();
+
+  return technologies.isNotEmpty ? technologies.join(', ') : 'Tipo desconocido';
+}
+
 
   @override
   Map<String, dynamic> get additionalData {
-    // Retornar datos adicionales
     return tag.data;
   }
 
   @override
   String toString() {
     return '''
-Etiqueta NFC Detectada:
 ID: $id
 Tipo: $type
-Datos Adicionales: ${additionalData.isNotEmpty ? additionalData : 'Ninguno'}
-    ''';
+Datos Adicionales: ${jsonEncode(additionalData)}
+''';
   }
+
+  String _formatIdentifier(dynamic identifier) {
+    if (identifier is List) {
+      return identifier.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join(':').toUpperCase();
+    }
+    return identifier.toString();
+  }
+}
+
+abstract class NfcData {
+  String get id;
+  String get type;
+  Map<String, dynamic> get additionalData;
 }
