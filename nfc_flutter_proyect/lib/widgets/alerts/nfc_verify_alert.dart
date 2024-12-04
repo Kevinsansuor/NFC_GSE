@@ -9,7 +9,6 @@ class NfcResultDialog extends StatelessWidget {
     super.key,
     required this.message,
   });
-  
 
   @override
   Widget build(BuildContext context) {

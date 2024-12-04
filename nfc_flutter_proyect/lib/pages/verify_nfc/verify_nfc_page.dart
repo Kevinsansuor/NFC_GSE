@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nfc_flutter_proyect/adapters/nfc/nfc_tag_adapter.dart';
 import 'package:nfc_flutter_proyect/main.dart';
 import 'package:nfc_flutter_proyect/pages/error_nfc/error_nfc_page.dart';
+import 'package:nfc_flutter_proyect/pages/valid_nfc/valid_nfc_page.dart';
 import 'package:nfc_flutter_proyect/widgets/alerts/nfc_verify_alert.dart';
 import 'package:nfc_flutter_proyect/widgets/body_text/body_text.dart';
 import 'package:nfc_flutter_proyect/widgets/h1_text/tittle_text.dart';
@@ -20,61 +21,84 @@ class _VerifyNfcPageState extends State<VerifyNfcPage> {
   bool _isReading = false;
 
   Future<void> _readNFC() async {
-  final isAvailable = await NfcManager.instance.isAvailable();
-  if (!isAvailable) {
-    if (mounted) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const ErrorNfcPage()));
+    final isAvailable = await NfcManager.instance.isAvailable();
+    if (!isAvailable) {
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ErrorNfcPage()),
+        );
+      }
+      return;
     }
-    return;
-  }
 
-  if (mounted) {
-    _showNfcDialog(context, 'Escaneando etiqueta NFC...');
-  }
-  setState(() {
-    _isReading = true;
-    _nfcData = 'Escaneando...';
-  });
-
-  try {
-    // Iniciar sesión NFC
-    await NfcManager.instance.startSession(onDiscovered: _handleNfcTag);
-    logger.i('NFC session started');
-  } on Exception catch (e) {
     if (mounted) {
-      _showNfcDialog(context, 'Error al leer NFC: $e');
+      _showNfcDialog('Escaneando etiqueta NFC...');
     }
-  }
-}
 
+    setState(() {
+      _isReading = true;
+      _nfcData = 'Escaneando...';
+    });
 
-  Future<void> _handleNfcTag(NfcTag tag) async {
     try {
-      String nfcTag = NfcTagAdapter(tag).toString();
-      setState(() {
-        _isReading = false;
-        _nfcData = nfcTag;
+      await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+        setState(() {
+          _isReading = false;
+        });
+        Navigator.of(context, rootNavigator: true).pop();
+        Navigator.pop(context);
+        logger.d('Cerrar dialogo');
+
+        try {
+          if (tag.data.isNotEmpty) {
+            logger.i('NFC tag data: ${tag.data.toString()}');
+            if (mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ValidNfcPage()),
+              );
+            }
+            return;
+          }
+
+          // Procesar la etiqueta NFC
+          String nfcTag = NfcTagAdapter(tag).toString();
+          setState(() {
+            _isReading = false;
+            _nfcData = nfcTag;
+          });
+          _showNfcDialog(nfcTag);
+        } catch (e) {
+          _showNfcDialog('Error al procesar la etiqueta NFC: $e');
+        } finally {
+          await NfcManager.instance.stopSession();
+          setState(() {
+            _isReading = false;
+          });
+        }
       });
-      Navigator.of(context).pop();
-      _showNfcDialog(context, _nfcData);
+
+      logger.i('NFC session started');
     } catch (e) {
-      _showNfcDialog(context,'Error al procesar la etiqueta NFC: $e');
-    } finally {
-      await NfcManager.instance.stopSession();
+      if (mounted) {
+        _showNfcDialog('Error al iniciar la sesión NFC: $e');
+      }
       setState(() {
         _isReading = false;
       });
     }
   }
-  void _showNfcDialog(BuildContext context, String message) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return NfcResultDialog(message: message);
-    },
-  );
 
-}
+  void _showNfcDialog(String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return NfcResultDialog(message: message);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
