@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_flutter_proyect/widgets/body_text/body_text.dart';
+import 'package:nfc_flutter_proyect/widgets/h1_text/tittle_text.dart';
 
 class ErrorNfcPage extends StatelessWidget {
   const ErrorNfcPage({super.key});
@@ -9,30 +11,28 @@ class ErrorNfcPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Error NFC'),
       ),
-      body: const Center(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 100,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'No se detectó NFC en su dispositivo.',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Asegúrese de que su dispositivo sea compatible con la tecnología NFC e intente nuevamente.',
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-            ],
+      body: const SafeArea(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 100,
+                ),
+                SizedBox(height: 20),
+                TittleText(
+                  text: 'No se detectó NFC',
+                ),
+                BodyText(
+                  text:
+                      'Bienvenido a NFC App, con esta aplicación podrás, escanear, añadir y configurar tarjetas con la tecnología NFC de tu dispositivo Android.',
+                ),
+              ],
+            ),
           ),
         ),
       ),
