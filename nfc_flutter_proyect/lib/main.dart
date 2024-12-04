@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
-import 'package:nfc_flutter_proyect/pages/verify_nfc_page.dart';
+import 'package:nfc_flutter_proyect/pages/verify_nfc/verify_nfc_page.dart';
 import 'package:nfc_flutter_proyect/theme/app_theme.dart';
 
 var logger = Logger();
