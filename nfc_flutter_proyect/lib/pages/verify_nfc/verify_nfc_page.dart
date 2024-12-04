@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_flutter_proyect/adapters/nfc/nfc_tag_adapter.dart';
 import 'package:nfc_flutter_proyect/main.dart';
+import 'package:nfc_flutter_proyect/pages/error_nfc/error_nfc_page.dart';
 import 'package:nfc_flutter_proyect/widgets/alerts/nfc_verify_alert.dart';
 import 'package:nfc_flutter_proyect/widgets/body_text/body_text.dart';
 import 'package:nfc_flutter_proyect/widgets/h1_text/tittle_text.dart';
@@ -22,7 +23,7 @@ class _VerifyNfcPageState extends State<VerifyNfcPage> {
   final isAvailable = await NfcManager.instance.isAvailable();
   if (!isAvailable) {
     if (mounted) {
-      _showNfcDialog(context, 'Tu dispositivo no soporta la tecnología NFC.');
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const ErrorNfcPage()));
     }
     return;
   }
