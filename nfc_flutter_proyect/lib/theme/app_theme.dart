@@ -13,7 +13,7 @@ class AppTheme extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.white, brightness: Brightness.dark)
+                seedColor: const Color(0xFF1b1f1c), brightness: Brightness.dark,)
             .copyWith(
           primary: const Color(0xFFdde0e1),
           secondary: const Color(0xFF1b1f1c),
@@ -41,6 +41,9 @@ class AppTheme extends StatelessWidget {
             height: 18 / 21,
           ),
         ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(0, 15, 78, 31),          elevation: 0,
+        )
       ),
       home: child,
     );

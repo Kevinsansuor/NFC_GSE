@@ -102,27 +102,28 @@ class _VerifyNfcPageState extends State<VerifyNfcPage> {
     );
   }
 
-Future<bool> _onWillPop() async {
-  return (await showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('¿Seguro que quieres salir?'),
-      content: const Text('Si sales, perderás los avances actuales.'),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false), // No salir
-          child: const Text('Cancelar'),
-        ),
-        TextButton(
-          child: const Text('Salir'),
-          onPressed: () {
-            exit(0);
-          },
-        ),
-      ],
-    ),
-  )) ?? false; 
-}
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('¿Seguro que quieres salir?'),
+            content: const Text('Si sales, perderás los avances actuales.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                child: const Text('Salir'),
+                onPressed: () {
+                  exit(0);
+                },
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +131,13 @@ Future<bool> _onWillPop() async {
     final Color primaryOpaqueColor =
         Theme.of(context).colorScheme.onPrimaryFixed;
 
-    return WillPopScope(
-      onWillPop: _onWillPop,  
+    
+
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        _onWillPop();
+      },
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
@@ -181,13 +187,15 @@ Future<bool> _onWillPop() async {
                               LargeText(
                                 text: 'Prueba NFC',
                                 color: primaryColor,
-                                textStyle: Theme.of(context).textTheme.titleLarge,
+                                textStyle:
+                                    Theme.of(context).textTheme.titleLarge,
                               ),
                               BodyText(
                                 text:
                                     'Verifiquemos que tu dispositivo tiene la tecnología NFC incorporada.',
                                 color: primaryColor,
-                                textStyle: Theme.of(context).textTheme.bodyLarge,
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyLarge,
                               ),
                             ],
                           ),
@@ -218,7 +226,8 @@ Future<bool> _onWillPop() async {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15),
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     textStyle:
