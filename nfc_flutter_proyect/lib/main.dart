@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
+import 'package:nfc_flutter_proyect/pages/register/user_register.dart';
 import 'package:nfc_flutter_proyect/pages/verify_nfc/verify_nfc_page.dart';
 import 'package:nfc_flutter_proyect/theme/app_theme.dart';
 
@@ -18,9 +19,9 @@ class NFCApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: title,
-      home: const AppTheme(
+      home: AppTheme(
         child: SafeArea(
-          child: VerifyNfcPage(),
+          child: RegisterScreen(),
         ),
       ),
     );

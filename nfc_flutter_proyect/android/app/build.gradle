@@ -7,8 +7,8 @@ plugins {
 
 android {
     namespace = "com.example.nfc_flutter_proyect"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = flutter.compileSdkVersion  // Usa el valor de Flutter para la versión de SDK
+    ndkVersion = flutter.ndkVersion  // Asegúrate de tener esta versión correctamente definida
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -20,14 +20,11 @@ android {
     }
 
     defaultConfig {
-       defaultConfig {
-    applicationId = "com.example.nfc_flutter_proyect"
-    minSdk = 26  // Actualiza esta línea a 26 o superior
-    targetSdk = flutter.targetSdkVersion
-    versionCode = flutter.versionCode
-    versionName = flutter.versionName
-}
-
+        applicationId = "com.example.nfc_flutter_proyect"
+        minSdk = 26  // Asegúrate de que sea 26 o superior para compatibilidad con biometría
+        targetSdk = flutter.targetSdkVersion  // Usa el valor de Flutter para el targetSdk
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
     }
 
     buildTypes {
@@ -40,5 +37,5 @@ android {
 }
 
 flutter {
-    source = "../.."
+    source = "../.."  // Ruta al proyecto Flutter
 }
