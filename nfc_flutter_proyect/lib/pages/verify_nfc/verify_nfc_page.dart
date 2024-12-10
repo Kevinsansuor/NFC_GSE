@@ -19,6 +19,7 @@ class VerifyNfcPage extends StatefulWidget {
 }
 
 class _VerifyNfcPageState extends State<VerifyNfcPage> {
+  // ignore: unused_field
   String _nfcData = '';
   bool _isReading = false;
 

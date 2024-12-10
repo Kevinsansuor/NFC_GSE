@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:nfc_flutter_proyect/pages/verify_nfc/verify_nfc_page.dart';
-import 'package:nfc_flutter_proyect/widgets/body_text/body_text.dart';
 import 'package:nfc_flutter_proyect/widgets/h2_text/large_text.dart';
 
 class RegisterScreen extends StatefulWidget {
