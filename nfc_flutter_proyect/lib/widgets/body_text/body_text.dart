@@ -4,12 +4,14 @@ class BodyText extends StatelessWidget {
   final String text;
   final Color? color;
   final TextStyle? textStyle;
+  final TextAlign textAlign;
 
   const BodyText({
     super.key,
     required this.text,
     this.color,
     this.textStyle,
+    required this.textAlign,
   });
 
   @override
@@ -22,6 +24,7 @@ class BodyText extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Text(
+          textAlign: textAlign,
           text,
           style: textStyle?.copyWith(
                   color: color,

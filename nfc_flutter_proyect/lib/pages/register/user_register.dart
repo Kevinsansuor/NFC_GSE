@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:nfc_flutter_proyect/pages/verify_nfc/verify_nfc_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:nfc_flutter_proyect/widgets/body_text/body_text.dart';
+import 'package:nfc_flutter_proyect/widgets/h2_text/large_text.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -19,7 +20,8 @@ class RegisterScreenState extends State<RegisterScreen> {
     try {
       final bool didAuthenticate = await _auth.authenticate(
         localizedReason: 'Por favor, autentícate con tu huella digital',
-        options: const AuthenticationOptions(biometricOnly: true),
+        options: const AuthenticationOptions(
+            biometricOnly: false, useErrorDialogs: true, stickyAuth: true),
       );
 
       setState(() {
@@ -29,30 +31,22 @@ class RegisterScreenState extends State<RegisterScreen> {
       if (didAuthenticate) {
         await _registerUser();
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Autenticación fallida')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Autenticación fallida')),
+          );
+        }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error en la autenticación biométrica: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error en la autenticación biométrica: $e')),
+        );
+      }
     }
   }
 
   Future<void> _registerUser() async {
-    String name = nameController.text.trim();
-
-    if (name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, ingresa tu nombre')),
-      );
-      return;
-    }
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userName', name);
-
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Huella digital capturada correctamente')),
@@ -65,23 +59,47 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Registro de Usuario')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: 'Nombre'),
+      appBar: AppBar(title: const Text('Autenticación biometrica')),
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  child: Column(children: [
+                    ElevatedButton(
+                      style: const ButtonStyle(
+                        padding: WidgetStatePropertyAll(EdgeInsets.all(16.0)),
+                        elevation: WidgetStatePropertyAll(5.0),
+                      ),
+                      onPressed: _authenticate,
+                      child: _isAuthenticated
+                          ? const Icon(
+                              Icons.fingerprint,
+                              size: 80,
+                              color: Color(0xFFA0CC78),
+                            )
+                          : const Icon(Icons.fingerprint_outlined,
+                              size: 80, color: Color(0xFFA0CC78)),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const Center(
+                        child: LargeText(
+                      text: 'Por favor autenticate',
+                      textAlign: TextAlign.center,
+                    ))
+                  ]),
+                )
+              ],
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _authenticate,
-              child: Text(
-                  _isAuthenticated ? 'Huella Autenticada' : 'Registrar Huella'),
-            ),
-          ],
+          ),
         ),
       ),
     );

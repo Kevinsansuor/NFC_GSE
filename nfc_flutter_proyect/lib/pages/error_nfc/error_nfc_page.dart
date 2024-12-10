@@ -12,23 +12,22 @@ class ErrorNfcPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).colorScheme.primary;
-    final Color primaryOpaqueColor = Theme.of(context).colorScheme.onPrimaryFixed;
+    final Color primaryOpaqueColor =
+        Theme.of(context).colorScheme.onPrimaryFixed;
 
     return WillPopScope(
-      onWillPop: _onWillPop, 
+      onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-      
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => VerifyNfcPage()),
               );
             },
           ),
-          
         ),
         backgroundColor: const Color(0xFF1A1A1A),
         body: Padding(
@@ -48,10 +47,13 @@ class ErrorNfcPage extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Text(
                               'Verificacion Fallida',
-                              style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                color: primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge
+                                  ?.copyWith(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                           ),
                         ],
@@ -79,14 +81,18 @@ class ErrorNfcPage extends StatelessWidget {
                                 LargeText(
                                   text: 'No se encontro NFC',
                                   color: primaryColor,
-                                  textStyle: Theme.of(context).textTheme.titleLarge,
+                                  textStyle:
+                                      Theme.of(context).textTheme.titleLarge,
                                 ),
                                 Text(
-                                  'No se encuentra actividad NFC reconocida',
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: primaryColor,
-                                    height: 1.0,
-                                  ),
+                                  'No se encuentra actividad NFC o no se ha reconocido.',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(
+                                        color: primaryColor,
+                                        height: 1.0,
+                                      ),
                                 ),
                               ],
                             ),
@@ -101,7 +107,8 @@ class ErrorNfcPage extends StatelessWidget {
                                     children: [
                                       Center(
                                         child: Image(
-                                          image: AssetImage('assets/images/appImages/fail.png'),
+                                          image: AssetImage(
+                                              'assets/images/appImages/fail.png'),
                                           width: 280,
                                           height: 280,
                                           fit: BoxFit.cover,
@@ -117,11 +124,16 @@ class ErrorNfcPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 15),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      textStyle: Theme.of(context).textTheme.labelLarge,
-                                      side: BorderSide(color: primaryOpaqueColor, width: 2.5),
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
+                                      side: BorderSide(
+                                          color: primaryOpaqueColor,
+                                          width: 2.5),
                                       padding: const EdgeInsets.all(25),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(50),

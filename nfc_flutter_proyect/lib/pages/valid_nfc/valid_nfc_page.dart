@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:nfc_flutter_proyect/pages/verify_nfc/verify_nfc_page.dart';
