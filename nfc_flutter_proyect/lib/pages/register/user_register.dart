@@ -13,7 +13,7 @@ class RegisterScreen extends StatefulWidget {
 class RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
   final LocalAuthentication _auth = LocalAuthentication();
-  bool _isAuthenticated = false;
+  bool _isAuthenticated = true;
 
   Future<void> _authenticate() async {
     try {
@@ -27,7 +27,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         _isAuthenticated = didAuthenticate;
       });
 
-      if (didAuthenticate) {
+      if (!didAuthenticate) {
         await _registerUser();
       } else {
         if (mounted) {

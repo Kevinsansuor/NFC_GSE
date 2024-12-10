@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
+import 'package:nfc_flutter_proyect/pages/dashboard/main_dashboard_page.dart';
 import 'package:nfc_flutter_proyect/pages/register/user_register.dart';
 import 'package:nfc_flutter_proyect/theme/app_theme.dart';
 
