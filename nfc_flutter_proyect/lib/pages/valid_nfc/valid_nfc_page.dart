@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:nfc_flutter_proyect/pages/dashboard/main_dashboard_page.dart';
 import 'package:nfc_flutter_proyect/pages/verify_nfc/verify_nfc_page.dart';
 import 'package:nfc_flutter_proyect/widgets/h2_text/large_text.dart';
 
@@ -140,7 +140,12 @@ class _ValidNfcPageState extends State<ValidNfcPage> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    //acciones del boton
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const MainDashboardPage(),
+                                        ),
+                                      );
                                   },
                                   child: const Text('Siguiente'),
                                 ),

@@ -79,11 +79,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                       onPressed: _authenticate,
                       child: _isAuthenticated
                           ? const Icon(
-                              Icons.fingerprint,
+                              Icons.lock,
                               size: 80,
                               color: Color(0xFFA0CC78),
                             )
-                          : const Icon(Icons.fingerprint_outlined,
+                          : const Icon(Icons.lock,
                               size: 80, color: Color(0xFFA0CC78)),
                     ),
                     const SizedBox(

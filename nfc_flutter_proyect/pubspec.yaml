@@ -29,4 +29,5 @@ flutter:
     - assets/images/appImages/img_nfc_test.png
     - assets/images/appImages/successful.png
     - assets/images/appImages/fail.png
+    - assets/images/appImages/nfc_signal.png
 
