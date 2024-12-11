@@ -156,7 +156,7 @@ class _VerifyNfcPageState extends State<VerifyNfcPage> {
                           textStyle: Theme.of(context).textTheme.displayLarge,
                         ),
                         BodyText(
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.start,
                           text:
                               'Bienvenido a NFC App, con esta aplicación podrás, escanear, añadir y configurar tarjetas con la tecnología NFC de tu dispositivo Android.',
                           color: primaryColor,
@@ -191,7 +191,7 @@ class _VerifyNfcPageState extends State<VerifyNfcPage> {
                                     Theme.of(context).textTheme.titleLarge,
                               ),
                               BodyText(
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 text:
                                     'Verifiquemos que tu dispositivo tiene la tecnología NFC incorporada.',
                                 color: primaryColor,
